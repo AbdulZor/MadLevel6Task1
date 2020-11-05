@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.madlevel6task1.databinding.ItemColorBinding
 import com.example.madlevel6task1.entity.ColorItem
 
-class ColorAdapter(private val colors: List<ColorItem>) :
+class ColorAdapter(private val colors: List<ColorItem>, private val onClick: (ColorItem) -> Unit) :
     RecyclerView.Adapter<ColorAdapter.ViewHolder>() {
 
     private lateinit var context: Context
@@ -27,6 +27,14 @@ class ColorAdapter(private val colors: List<ColorItem>) :
 
     inner class ViewHolder(private val itemColorBinding: ItemColorBinding) :
         RecyclerView.ViewHolder(itemColorBinding.root) {
+
+        init {
+            // Attach click listener to the ImageView and execute the onClick function when event occurs
+            itemColorBinding.ivColor.setOnClickListener {
+                onClick(colors[adapterPosition])
+            }
+        }
+
         fun bind(colorItem: ColorItem) {
             Glide.with(context).load(colorItem.getImageUrl())
                 .into(itemColorBinding.ivColor);
