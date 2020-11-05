@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madlevel6task1.databinding.FragmentColorBinding
 import com.example.madlevel6task1.entity.ColorItem
+import com.example.madlevel6task1.viewmodel.ColorViewModel
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -16,16 +18,17 @@ import com.google.android.material.snackbar.Snackbar
  */
 class ColorFragment : Fragment() {
     private lateinit var fragmentColorBinding: FragmentColorBinding
+    private val viewModel: ColorViewModel by viewModels()
 
     private val colorList = arrayListOf<ColorItem>()
-    private var colorAdapter: ColorAdapter
+    private lateinit var colorAdapter: ColorAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val fragmentColorBinding = FragmentColorBinding.inflate(layoutInflater)
+        fragmentColorBinding = FragmentColorBinding.inflate(layoutInflater)
         return fragmentColorBinding.root
     }
 
@@ -51,6 +54,10 @@ class ColorFragment : Fragment() {
     }
 
     private fun observeColors() {
-        TODO("Not yet implemented")
+        viewModel.colorItems.observe(viewLifecycleOwner, {
+            colorList.clear()
+            colorList.addAll(it)
+            colorAdapter.notifyDataSetChanged()
+        })
     }
 }
